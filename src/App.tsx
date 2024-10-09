@@ -1,8 +1,8 @@
-import Header from "./components/header";
+import Header from "@/components/header";
 
 export default function App() {
   return (
-    <div className="max-w-prose border border-battleshipGray shadow-lg rounded-lg mx-auto py-10 mt-10">
+    <div className="py-10 mx-auto mt-10 border rounded-lg shadow-lg max-w-prose border-battleshipGray">
       <Header />
     </div>
   );
