@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -15,7 +15,21 @@ interface Coordinates {
   y2: number;
 }
 
-const MapDrawer: React.FC = () => {
+const MapDrawer = ({
+  onDraw,
+}: {
+  onDraw: ({
+    x1,
+    y1,
+    x2,
+    y2,
+  }: {
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+  }) => void;
+}) => {
   const [firstPoint, setFirstPoint] = useState<[number, number] | null>(null);
   const [bounds, setBounds] = useState<LatLngBounds | null>(null);
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
@@ -34,6 +48,13 @@ const MapDrawer: React.FC = () => {
           const sw = newBounds.getSouthWest();
           const ne = newBounds.getNorthEast();
           setCoordinates({
+            x1: sw.lng,
+            y1: ne.lat,
+            x2: ne.lng,
+            y2: sw.lat,
+          });
+
+          onDraw({
             x1: sw.lng,
             y1: ne.lat,
             x2: ne.lng,
