@@ -1,15 +1,13 @@
 import Header from "@/components/header";
 import MapDrawer from "@/components/map-drawer";
 import { useLocation } from "@/lib/hooks/location";
-import { type ProofData } from "@noir-lang/backend_barretenberg";
 import { useState } from "react";
-import { useNoir } from "@/lib/hooks/noir";
-import { useBarretenberg } from "@/lib/hooks/barretenberg";
+import { useProofGeneration } from "./lib/hooks/proof-generation";
 
 export default function App() {
+  const [input, setInput] = useState<{ [key: string]: number } | undefined>();
+  const { proofData } = useProofGeneration(input);
   const { longitude, latitude } = useLocation();
-  const { noir } = useNoir();
-  const { backend } = useBarretenberg();
 
   const [coordinates, setCoordinates] = useState<{
     x1: number;
@@ -17,9 +15,8 @@ export default function App() {
     x2: number;
     y2: number;
   } | null>(null);
-  const [proof, setProof] = useState<ProofData | null>(null);
 
-  const handleDraw = async (coordinates: {
+  const handleDraw = (coordinates: {
     x1: number;
     y1: number;
     x2: number;
@@ -34,20 +31,24 @@ export default function App() {
       return;
     }
 
-    if (!noir) {
-      alert("Noir is not initialized");
-      return;
-    }
-
     const input = {
       ...coordinates,
       x: longitude!,
       y: latitude!,
     };
 
-    const { witness } = await noir.execute(input);
-    const proof = await backend.generateProof(witness);
-    setProof(proof);
+    // Multiply by 10^6 to match the precision of the witness and cast to integer
+    const sanitizedInput = {
+      x: Math.round(input.x * 1000000),
+      y: Math.round(input.y * 1000000),
+      x1: Math.round(input.x1 * 1000000),
+      y1: Math.round(input.y1 * 1000000),
+      x2: Math.round(input.x2 * 1000000),
+      y2: Math.round(input.y2 * 1000000),
+    };
+
+    console.log("input", sanitizedInput);
+    setInput(sanitizedInput);
   };
 
   return (
@@ -67,7 +68,7 @@ export default function App() {
         </button>
       </div>
 
-      {proof && <div className="px-4 mt-8">Proof: {proof.proof}</div>}
+      {proofData && <div className="px-4 mt-8">Proof: {proofData.proof}</div>}
     </div>
   );
 }

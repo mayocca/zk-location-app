@@ -1,14 +1,14 @@
 /// Checks if a given longitude is valid (between -180 and 180 degrees, inclusive)
-fn is_valid_longitude(lon: i32) -> bool {
+fn is_valid_longitude(lon: i64) -> bool {
     lon >= -180 & lon <= 180
 }
 
 /// Checks if a given latitude is valid (between -90 and 90 degrees, inclusive)
-fn is_valid_latitude(lat: i32) -> bool {
+fn is_valid_latitude(lat: i64) -> bool {
     lat >= -90 & lat <= 90
 }
 
-fn is_longitude_in_range(start: i32, end: i32, point: i32) -> bool {
+fn is_longitude_in_range(start: i64, end: i64, point: i64) -> bool {
     if start <= end {
         point >= start & point <= end
     } else {
@@ -16,12 +16,12 @@ fn is_longitude_in_range(start: i32, end: i32, point: i32) -> bool {
     }
 }
 
-fn is_latitude_in_range(start: i32, end: i32, point: i32) -> bool {
+fn is_latitude_in_range(start: i64, end: i64, point: i64) -> bool {
     point >= start & point <= end
 }
 
 #[export]
-fn main(x1: pub i32, y1: pub i32, x2: pub i32, y2: pub i32, x: pub i32, y: pub i32) {
+fn main(x1: pub i64, y1: pub i64, x2: pub i64, y2: pub i64, x: pub i64, y: pub i64) {
     assert(is_valid_longitude(x1) & is_valid_longitude(x2) & is_valid_longitude(x));
     assert(is_valid_latitude(y1) & is_valid_latitude(y2) & is_valid_latitude(y));
 
