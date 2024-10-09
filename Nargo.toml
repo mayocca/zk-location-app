@@ -1,0 +1,8 @@
+[package]
+name = "circuits"
+type = "bin"
+authors = [""]
+compiler_version = ">=0.33.0"
+entry = "circuits/src/main.nr"
+
+[dependencies]
