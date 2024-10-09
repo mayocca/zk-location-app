@@ -20,6 +20,7 @@ fn is_latitude_in_range(start: i32, end: i32, point: i32) -> bool {
     point >= start & point <= end
 }
 
+#[export]
 fn main(x1: pub i32, y1: pub i32, x2: pub i32, y2: pub i32, x: pub i32, y: pub i32) {
     assert(is_valid_longitude(x1) & is_valid_longitude(x2) & is_valid_longitude(x));
     assert(is_valid_latitude(y1) & is_valid_latitude(y2) & is_valid_latitude(y));
