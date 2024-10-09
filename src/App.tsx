@@ -1,19 +1,9 @@
-import { useAppKit, useWalletInfo } from "@reown/appkit/react";
-import { useAccount } from "wagmi";
+import Header from "./components/header";
 
 export default function App() {
-  const { open } = useAppKit();
-
-  const { walletInfo } = useWalletInfo();
-  const { address } = useAccount();
-
-  console.log("walletInfo", walletInfo);
-  console.log("address", address);
   return (
-    <div>
-      <h1>ZK Location</h1>
-      <p>Prove you are in a specific region without revealing your location.</p>
-      <button onClick={() => open({ view: "Connect" })}>Open AppKit</button>
+    <div className="max-w-prose border border-battleshipGray shadow-lg rounded-lg mx-auto py-10 mt-10">
+      <Header />
     </div>
   );
 }

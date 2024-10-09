@@ -1,4 +1,3 @@
-import "./globals.css";
 import { AppKitProvider } from "@/lib/providers/wagmi";
 
 export default function Layout({
@@ -8,7 +7,7 @@ export default function Layout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-red text-text">
         <AppKitProvider>{children}</AppKitProvider>
       </body>
     </html>

@@ -3,6 +3,7 @@ import copy from "rollup-plugin-copy";
 import fs from "fs";
 import path from "path";
 
+/** @type {import('vite').PluginOption} */
 const wasmContentTypePlugin = {
   name: "wasm-content-type-plugin",
   configureServer(server) {
@@ -45,7 +46,7 @@ export default defineConfig(({ command }) => {
       ],
       resolve: {
         alias: {
-          "@": path.resolve(__dirname, "./src"),
+          "@/": path.resolve(__dirname, "./src"),
         },
       },
     };
