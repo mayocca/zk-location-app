@@ -1,9 +1,7 @@
-"use client";
-
 import { useAppKit, useWalletInfo } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
 
-export default function Home() {
+export default function App() {
   const { open } = useAppKit();
 
   const { walletInfo } = useWalletInfo();
