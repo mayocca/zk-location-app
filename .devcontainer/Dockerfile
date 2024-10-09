@@ -10,6 +10,6 @@ RUN noirup -v 0.34.0
 # Install Barretenberg
 RUN curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/master/barretenberg/cpp/installation/install | bash
 ENV PATH="/root/.bb:${PATH}"
-RUN bbup -v 0.50.0
+RUN bbup -v 0.55.0
 
 ENTRYPOINT ["nargo"]
