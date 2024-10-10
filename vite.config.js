@@ -52,5 +52,14 @@ export default defineConfig(({ command }) => {
     };
   }
 
-  return {};
+  return {
+    build: {
+      target: "esnext",
+    },
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
+    },
+  };
 });
