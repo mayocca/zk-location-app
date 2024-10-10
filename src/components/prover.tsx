@@ -48,10 +48,7 @@ export function Prover() {
 
       {/* Prove */}
       <div className="flex justify-center px-4 mt-8">
-        <button
-          className="px-4 py-2 text-white rounded-md bg-battleshipGray"
-          onClick={handleProve}
-        >
+        <button className="w-full btn btn-primary" onClick={handleProve}>
           Generate Proof
         </button>
       </div>

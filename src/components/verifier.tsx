@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { hexToUint8Array } from "@/lib/utils";
 import {
   BarretenbergBackend,
@@ -19,8 +19,7 @@ export function Verifier() {
     x2: number;
     y2: number;
   } | null>(null);
-
-  const [isMapDialogOpen, setIsMapDialogOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const verifyProof = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,12 +46,11 @@ export function Verifier() {
           y2: parsedPublicInputs[3] / 10 ** 6 - 90,
         };
         setDecodedInputs(decoded);
-        setIsMapDialogOpen(true);
+        dialogRef.current?.showModal();
       } else {
+        alert("Invalid proof!");
         setDecodedInputs(null);
       }
-
-      alert(isValid ? "Valid proof!" : "Invalid proof!");
     } catch (error) {
       console.error("Verification error:", error);
       alert("Error verifying proof. Please check the console for details.");
@@ -106,14 +104,12 @@ export function Verifier() {
           )}
         </div>
       )}
-      {decodedInputs && (
-        <MapDialog
-          title="Verified Area"
-          isOpen={isMapDialogOpen}
-          onClose={() => setIsMapDialogOpen(false)}
-          coordinates={decodedInputs}
-        />
-      )}
+      <MapDialog
+        dialogRef={dialogRef}
+        title="Verified Area"
+        coordinates={decodedInputs}
+        isOpen={decodedInputs !== null}
+      />
     </div>
   );
 }

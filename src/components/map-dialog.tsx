@@ -1,26 +1,35 @@
 import { MapContainer, TileLayer, Rectangle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { type LatLngExpression } from "leaflet";
+import { PropsWithRef, RefObject, useEffect } from "react";
 
 interface MapDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
   coordinates: {
     x1: number;
     y1: number;
     x2: number;
     y2: number;
-  };
+  } | null;
   title: string;
+  dialogRef: RefObject<HTMLDialogElement>;
+  isOpen: boolean;
 }
 
 export function MapDialog({
-  isOpen,
-  onClose,
   coordinates,
   title,
-}: MapDialogProps) {
-  if (!isOpen) return null;
+  dialogRef,
+  isOpen,
+}: PropsWithRef<MapDialogProps>) {
+  useEffect(() => {
+    if (isOpen && dialogRef.current && coordinates) {
+      dialogRef.current.showModal();
+    } else if (!isOpen && dialogRef.current) {
+      dialogRef.current.close();
+    }
+  }, [isOpen, coordinates, dialogRef]);
+
+  if (!coordinates) return null;
 
   const { x1, y1, x2, y2 } = coordinates;
   const bounds = [
@@ -36,14 +45,18 @@ export function MapDialog({
   ];
 
   return (
-    <dialog
-      open={isOpen}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-    >
-      <div className="w-full max-w-2xl p-6 rounded-lg shadow-xl bg-raisin">
+    <dialog ref={dialogRef} className="modal">
+      <div className="modal-box">
         <h2 className="mb-4 text-2xl font-bold text-ashGray">{title}</h2>
-        <div className="w-full mb-4 h-96">
+        <div className="w-full mb-4 text-center h-96">
+          <p className="text-sm text-ashGray">
+            Northwestern point: {x1.toFixed(6)}, {y1.toFixed(6)}
+          </p>
+          <p className="text-sm text-ashGray">
+            Southeastern point: {x2.toFixed(6)}, {y2.toFixed(6)}
+          </p>
           <MapContainer
+            className="mt-4"
             center={center as LatLngExpression}
             bounds={mapBounds as [[number, number], [number, number]]}
             style={{ height: "100%", width: "100%" }}
@@ -55,12 +68,12 @@ export function MapDialog({
             />
           </MapContainer>
         </div>
-        <button
-          onClick={onClose}
-          className="px-4 py-2 transition-colors rounded bg-secondary text-raisin hover:bg-opacity-80"
-        >
-          Close
-        </button>
+        <p className="py-4">Press ESC key or click the button below to close</p>
+        <div className="modal-action">
+          <form method="dialog">
+            <button className="w-full btn btn-primary">Close</button>
+          </form>
+        </div>
       </div>
     </dialog>
   );
