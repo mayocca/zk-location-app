@@ -12,6 +12,12 @@ export function VerifierCard() {
   const [verificationResult, setVerificationResult] = useState<boolean | null>(
     null,
   );
+  const [decodedInputs, setDecodedInputs] = useState<{
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+  } | null>(null);
 
   const verifyProof = async () => {
     const compiledCircuit = circuit as CompiledCircuit;
@@ -28,10 +34,24 @@ export function VerifierCard() {
       });
 
       setVerificationResult(isValid);
+
+      if (isValid) {
+        const decoded = {
+          x1: parsedPublicInputs[0] / 10 ** 6 - 180,
+          y1: parsedPublicInputs[1] / 10 ** 6 - 90,
+          x2: parsedPublicInputs[2] / 10 ** 6 - 180,
+          y2: parsedPublicInputs[3] / 10 ** 6 - 90,
+        };
+        setDecodedInputs(decoded);
+      } else {
+        setDecodedInputs(null);
+      }
+
       alert(isValid ? "Valid proof!" : "Invalid proof!");
     } catch (error) {
       console.error("Verification error:", error);
       alert("Error verifying proof. Please check the console for details.");
+      setDecodedInputs(null);
     }
   };
 
@@ -55,7 +75,7 @@ export function VerifierCard() {
           rows={3}
           value={publicInputs}
           onChange={(e) => setPublicInputs(e.target.value)}
-          placeholder="Paste your public inputs here..."
+          placeholder="Paste your public inputs here (as a JSON array)..."
         />
       </div>
       <button
@@ -70,6 +90,15 @@ export function VerifierCard() {
           <p className={verificationResult ? "text-green-500" : "text-red-500"}>
             {verificationResult ? "Valid Proof" : "Invalid Proof"}
           </p>
+          {decodedInputs && (
+            <div className="mt-2">
+              <h4 className="font-semibold">Decoded Public Inputs:</h4>
+              <p>Latitude 1: {decodedInputs.y1.toFixed(6)}</p>
+              <p>Longitude 1: {decodedInputs.x1.toFixed(6)}</p>
+              <p>Latitude 2: {decodedInputs.y2.toFixed(6)}</p>
+              <p>Longitude 2: {decodedInputs.x2.toFixed(6)}</p>
+            </div>
+          )}
         </div>
       )}
     </div>
