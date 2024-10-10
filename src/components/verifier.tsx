@@ -52,9 +52,9 @@ export function Verifier() {
         setDecodedInputs(null);
       }
     } catch (error) {
+      setDecodedInputs(null);
       console.error("Verification error:", error);
       alert("Error verifying proof. Please check the console for details.");
-      setDecodedInputs(null);
     }
   };
 
