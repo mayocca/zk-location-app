@@ -53,6 +53,7 @@ export default defineConfig(({ command }) => {
   }
 
   return {
+    base: "https://mayocca.github.io/zk-location-app/",
     build: {
       target: "esnext",
     },
