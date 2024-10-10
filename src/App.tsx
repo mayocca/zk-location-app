@@ -1,8 +1,9 @@
 import Header from "@/components/header";
 import MapDrawer from "@/components/map-drawer";
 import { useLocation } from "@/lib/hooks/location";
+import { useProofGeneration } from "@/lib/hooks/proof-generation";
+import ProofCard from "@/components/proof-card";
 import { useState } from "react";
-import { useProofGeneration } from "./lib/hooks/proof-generation";
 
 export default function App() {
   const [input, setInput] = useState<{ [key: string]: number } | undefined>();
@@ -57,7 +58,7 @@ export default function App() {
         </button>
       </div>
 
-      {proofData && <div className="px-4 mt-8">Proof: {proofData.proof}</div>}
+      {proofData && <ProofCard proofData={proofData} />}
     </div>
   );
 }
