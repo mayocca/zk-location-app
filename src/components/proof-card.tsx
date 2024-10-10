@@ -1,4 +1,4 @@
-import { uint8ArrayToHex } from "@/lib/utils/hex";
+import { uint8ArrayToHex } from "@/lib/utils";
 import { ProofData } from "@noir-lang/backend_barretenberg";
 import { useState } from "react";
 

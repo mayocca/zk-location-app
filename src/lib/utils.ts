@@ -1,3 +1,7 @@
+import type { ClassValue } from "class-variance-authority/types";
+import { twMerge } from "tailwind-merge";
+import { clsx } from "clsx";
+
 /**
  * Converts a Uint8Array to a hexadecimal string.
  * @param uint8Array - The Uint8Array to convert.
@@ -33,4 +37,8 @@ export function hexToUint8Array(hexString: string): Uint8Array {
   }
 
   return bytes;
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
 }

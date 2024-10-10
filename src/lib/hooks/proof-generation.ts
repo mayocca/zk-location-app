@@ -27,16 +27,17 @@ export function useProofGeneration(inputs?: { [key: string]: number }) {
           : [key, Math.round((value + 90) * 10 ** 6)],
       ),
     );
-    
+
     try {
       const { witness } = await noir.execute(normalizedInputs);
-      
+
       const data = await backend.generateProof(witness);
-      
+
       setProofData(data);
       setNoir(noir);
       setBackend(backend);
     } catch (error) {
+      console.error(error);
       alert("Constraints not satisfied. Could not generate proof.");
     }
   };
