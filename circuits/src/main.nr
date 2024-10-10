@@ -1,73 +1,52 @@
-/// Checks if a given longitude is valid (between -180 and 180 degrees, inclusive)
-fn is_valid_longitude(lon: i64) -> bool {
-    lon >= -180 & lon <= 180
-}
+fn main(x1: pub Field, y1: pub Field, x2: pub Field, y2: pub Field, x: Field, y: Field) {
+    let ix1 = x1 as i64;
+    let iy1 = y1 as i64;
+    let ix2 = x2 as i64;
+    let iy2 = y2 as i64;
+    let ix = x as i64;
+    let iy = y as i64;
 
-/// Checks if a given latitude is valid (between -90 and 90 degrees, inclusive)
-fn is_valid_latitude(lat: i64) -> bool {
-    lat >= -90 & lat <= 90
-}
+    // Assert that y1 <= y2 to ensure a valid rectangle vertically
+    assert(iy1 <= iy2);
 
-fn is_longitude_in_range(start: i64, end: i64, point: i64) -> bool {
-    if start <= end {
-        point >= start & point <= end
+    // Check if the rectangle crosses the antimeridian
+    let crosses_antimeridian = ix1 > ix2;
+
+    // Assert that the private point (x, y) is within the rectangle
+    if crosses_antimeridian {
+        assert((ix >= ix1 & ix <= 360_000000) | (ix >= 0 & ix <= ix2));
     } else {
-        point >= start | point <= end
+        assert(ix >= ix1 & ix <= ix2);
     }
-}
-
-fn is_latitude_in_range(start: i64, end: i64, point: i64) -> bool {
-    point >= start & point <= end
-}
-
-#[export]
-fn main(x1: pub i64, y1: pub i64, x2: pub i64, y2: pub i64, x: pub i64, y: pub i64) {
-    assert(is_valid_longitude(x1) & is_valid_longitude(x2) & is_valid_longitude(x));
-    assert(is_valid_latitude(y1) & is_valid_latitude(y2) & is_valid_latitude(y));
-
-    // Check if the point is in the longitude range
-    assert(is_longitude_in_range(x1, x2, x));
-
-    // Check if the point is in the latitude range
-    assert(is_latitude_in_range(y1, y2, y));
+    assert(iy >= iy1 & iy <= iy2);
 }
 
 #[test]
 fn test_point_inside_rectangle() {
-    main(0, 0, 45, 45, 30, 30);
+    main(100_000000, 50_000000, 200_000000, 100_000000, 150_000000, 75_000000);
 }
 
 #[test]
-fn test_rectangle_crossing_antimeridian() {
-    main(170, -30, -170, 30, 175, 0);
+fn test_point_on_edge() {
+    main(100_000000, 50_000000, 200_000000, 100_000000, 100_000000, 75_000000);
 }
 
 #[test(should_fail)]
 fn test_point_outside_rectangle() {
-    main(0, 0, 45, 45, 50, 50);
+    main(100_000000, 50_000000, 200_000000, 100_000000, 250_000000, 75_000000);
+}
+
+#[test]
+fn test_rectangle_crosses_antimeridian() {
+    main(355_000000, 50_000000, 12_000000, 100_000000, 359_000000, 75_000000);
+}
+
+#[test]
+fn test_point_inside_rectangle_after_antimeridian() {
+    main(355_000000, 50_000000, 12_000000, 100_000000, 5_000000, 75_000000);
 }
 
 #[test(should_fail)]
-fn test_invalid_latitude_range() {
-    main(0, -100, 45, 100, 30, 0);
-}
-
-#[test(should_fail)]
-fn test_point_outside_latitude_range() {
-    main(0, 0, 45, 45, 30, 91);
-}
-
-#[test(should_fail)]
-fn test_point_outside_longitude_range_across_antimeridian() {
-    main(170, -30, -170, 30, 0, 0);
-}
-
-#[test(should_fail)]
-fn test_invalid_rectangle_longitude() {
-    main(190, 0, 200, 45, 195, 30);
-}
-
-#[test(should_fail)]
-fn test_point_on_antimeridian_outside_range() {
-    main(-170, -30, 170, 30, 180, 0);
+fn test_point_outside_rectangle_with_antimeridian() {
+    main(355_000000, 50_000000, 12_000000, 100_000000, 200_000000, 75_000000);
 }

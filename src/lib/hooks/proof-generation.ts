@@ -20,7 +20,16 @@ export function useProofGeneration(inputs?: { [key: string]: number }) {
     });
     const noir = new Noir(compiledCircuit);
 
-    const { witness } = await noir.execute(inputs);
+    const normalizedInputs = Object.fromEntries(
+      Object.entries(inputs).map(([key, value]) =>
+        key.startsWith("x")
+          ? [key, Math.round((value + 180) * 10 ** 6)]
+          : [key, Math.round((value + 90) * 10 ** 6)],
+      ),
+    );
+    console.log(normalizedInputs);
+
+    const { witness } = await noir.execute(normalizedInputs);
 
     const data = await backend.generateProof(witness);
 

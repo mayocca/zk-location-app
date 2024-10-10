@@ -33,22 +33,13 @@ export default function App() {
 
     const input = {
       ...coordinates,
+      y1: coordinates.y2,
+      y2: coordinates.y1,
       x: longitude!,
       y: latitude!,
     };
 
-    // Multiply by 10^6 to match the precision of the witness and cast to integer
-    const sanitizedInput = {
-      x: Math.round(input.x * 1000000),
-      y: Math.round(input.y * 1000000),
-      x1: Math.round(input.x1 * 1000000),
-      y1: Math.round(input.y1 * 1000000),
-      x2: Math.round(input.x2 * 1000000),
-      y2: Math.round(input.y2 * 1000000),
-    };
-
-    console.log("input", sanitizedInput);
-    setInput(sanitizedInput);
+    setInput(input);
   };
 
   return (
