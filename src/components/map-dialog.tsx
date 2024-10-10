@@ -29,6 +29,12 @@ export function MapDialog({
   ];
   const center = [(y1 + y2) / 2, (x1 + x2) / 2];
 
+  // Calculate the map bounds to show a larger area
+  const mapBounds = [
+    [Math.min(y1, y2) - 5, Math.min(x1, x2) - 5],
+    [Math.max(y1, y2) + 5, Math.max(x1, x2) + 5],
+  ];
+
   return (
     <dialog
       open={isOpen}
@@ -39,13 +45,13 @@ export function MapDialog({
         <div className="w-full mb-4 h-96">
           <MapContainer
             center={center as LatLngExpression}
-            zoom={5}
+            bounds={mapBounds as [[number, number], [number, number]]}
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <Rectangle
               bounds={bounds as [[number, number], [number, number]]}
-              pathOptions={{ color: "green", weight: 2, fillOpacity: 0.2 }}
+              pathOptions={{ color: "red", weight: 2, fillOpacity: 0.2 }}
             />
           </MapContainer>
         </div>

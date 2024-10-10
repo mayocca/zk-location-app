@@ -61,7 +61,7 @@ export function VerifierCard() {
 
   return (
     <div className="p-4 rounded-lg shadow-md text-ashGray">
-      <h2 className="mb-4 text-xl font-bold">Proof Verifier</h2>
+      <h2 className="mb-4 text-4xl font-bold text-center">Verifier</h2>
       <div className="mb-4">
         <h3 className="font-semibold">Enter Proof:</h3>
         <textarea
