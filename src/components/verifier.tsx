@@ -7,7 +7,7 @@ import {
 import circuit from "../../target/circuits.json";
 import { MapDialog } from "./map-dialog";
 
-export function VerifierCard() {
+export function Verifier() {
   const [proofInput, setProofInput] = useState("");
   const [publicInputs, setPublicInputs] = useState("");
   const [verificationResult, setVerificationResult] = useState<boolean | null>(
