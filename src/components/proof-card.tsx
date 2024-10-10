@@ -4,12 +4,15 @@ import { useState } from "react";
 
 export default function ProofCard({ proofData }: { proofData: ProofData }) {
   const [copied, setCopied] = useState(false);
+  const [copiedInputs, setCopiedInputs] = useState(false);
 
   const proofString = uint8ArrayToHex(proofData.proof);
 
   const trimmedProof = `${proofString.slice(0, 24)}...${proofString.slice(
     -24,
   )}`;
+
+  const publicInputsString = JSON.stringify(proofData.publicInputs, null, 2);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(proofString).then(() => {
@@ -18,14 +21,29 @@ export default function ProofCard({ proofData }: { proofData: ProofData }) {
     });
   };
 
+  const copyInputsToClipboard = () => {
+    navigator.clipboard.writeText(publicInputsString).then(() => {
+      setCopiedInputs(true);
+      setTimeout(() => setCopiedInputs(false), 2000);
+    });
+  };
+
   return (
     <div className="p-4 rounded-lg shadow-md text-ashGray">
       <h2 className="mb-4 text-xl font-bold">Proof Details</h2>
       <div className="mb-4">
         <h3 className="font-semibold">Public Inputs:</h3>
-        <pre className="p-2 overflow-x-auto text-sm rounded bg-raisin">
-          {JSON.stringify(proofData.publicInputs, null, 2)}
-        </pre>
+        <div className="flex items-center">
+          <pre className="flex-grow p-2 mr-2 overflow-x-auto text-sm rounded bg-raisin">
+            {publicInputsString}
+          </pre>
+          <button
+            onClick={copyInputsToClipboard}
+            className="px-3 py-1 transition-colors rounded bg-secondary text-raisin hover:bg-opacity-80"
+          >
+            {copiedInputs ? "Copied!" : "Copy"}
+          </button>
+        </div>
       </div>
       <div>
         <h3 className="font-semibold">Proof:</h3>

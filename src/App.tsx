@@ -4,6 +4,7 @@ import { useLocation } from "@/lib/hooks/location";
 import { useProofGeneration } from "@/lib/hooks/proof-generation";
 import ProofCard from "@/components/proof-card";
 import { useState } from "react";
+import { VerifierCard } from "./components/verifier-card";
 
 export default function App() {
   const [input, setInput] = useState<{ [key: string]: number } | undefined>();
@@ -59,6 +60,7 @@ export default function App() {
       </div>
 
       {proofData && <ProofCard proofData={proofData} />}
+      <VerifierCard />
     </div>
   );
 }
