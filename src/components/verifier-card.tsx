@@ -5,6 +5,7 @@ import {
   type CompiledCircuit,
 } from "@noir-lang/backend_barretenberg";
 import circuit from "../../target/circuits.json";
+import { MapDialog } from "./map-dialog";
 
 export function VerifierCard() {
   const [proofInput, setProofInput] = useState("");
@@ -18,6 +19,8 @@ export function VerifierCard() {
     x2: number;
     y2: number;
   } | null>(null);
+
+  const [isMapDialogOpen, setIsMapDialogOpen] = useState(false);
 
   const verifyProof = async () => {
     const compiledCircuit = circuit as CompiledCircuit;
@@ -43,6 +46,7 @@ export function VerifierCard() {
           y2: parsedPublicInputs[3] / 10 ** 6 - 90,
         };
         setDecodedInputs(decoded);
+        setIsMapDialogOpen(true);
       } else {
         setDecodedInputs(null);
       }
@@ -100,6 +104,14 @@ export function VerifierCard() {
             </div>
           )}
         </div>
+      )}
+      {decodedInputs && (
+        <MapDialog
+          title="Verified Area"
+          isOpen={isMapDialogOpen}
+          onClose={() => setIsMapDialogOpen(false)}
+          coordinates={decodedInputs}
+        />
       )}
     </div>
   );
