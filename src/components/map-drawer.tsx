@@ -56,9 +56,9 @@ const MapDrawer = ({
 
           onDraw({
             x1: parseFloat(sw.lng.toFixed(6)),
-            y1: parseFloat(ne.lat.toFixed(6)),
+            y1: parseFloat(sw.lat.toFixed(6)),
             x2: parseFloat(ne.lng.toFixed(6)),
-            y2: parseFloat(sw.lat.toFixed(6)),
+            y2: parseFloat(ne.lat.toFixed(6)),
           });
 
           // Reset firstPoint for the next rectangle

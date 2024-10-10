@@ -33,8 +33,6 @@ export default function App() {
 
     const input = {
       ...coordinates,
-      y1: coordinates.y2,
-      y2: coordinates.y1,
       x: longitude!,
       y: latitude!,
     };
